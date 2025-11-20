@@ -2,6 +2,9 @@
 require_once 'php/auth/check_auth.php';
 require_once 'php/db/connection.php';
 
+// Check if database migration is needed
+include_once 'check_migration.php';
+
 $page_title = 'Dashboard';
 
 $total_students_query = "SELECT COUNT(*) as total FROM students";
@@ -17,10 +20,11 @@ $today_students_query = "SELECT COUNT(*) as total FROM students WHERE DATE(creat
 $today_students_result = mysqli_query($conn, $today_students_query);
 $today_students = mysqli_fetch_assoc($today_students_result)['total'];
 
-$courses_query = "SELECT course_year_section, COUNT(*) as total FROM students GROUP BY course_year_section";
+$courses_query = "SELECT course, year_level, section, COUNT(*) as total FROM students GROUP BY course, year_level, section";
 $courses_result = mysqli_query($conn, $courses_query);
 $courses_data = [];
 while ($row = mysqli_fetch_assoc($courses_result)) {
+    $row['course_year_section'] = $row['course'] . ' ' . $row['year_level'] . '-' . $row['section'];
     $courses_data[] = $row;
 }
 

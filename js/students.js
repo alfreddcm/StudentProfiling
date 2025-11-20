@@ -157,7 +157,7 @@ function displayStudents(students) {
                 <td>${photoHtml}</td>
                 <td>${student.student_number} ${isNew ? '<span class="badge bg-success">New</span>' : ''}</td>
                 <td>${fullName}</td>
-                <td>${student.course_year_section}</td>
+                <td>${student.course} ${student.year_level}-${student.section}</td>
                 <td><span class="${statusBadge}">${student.enrollment_status}</span></td>
                 <td>
                     <button class="btn btn-sm btn-info" onclick="editStudent(${student.id})" title="Edit">
@@ -194,7 +194,9 @@ function editStudent(id) {
                 $('#contact_number').val(student.contact_number);
                 $('#guardian_name').val(student.guardian_name);
                 $('#guardian_contact').val(student.guardian_contact);
-                $('#course_year_section').val(student.course_year_section);
+                $('#course').val(student.course);
+                $('#year_level').val(student.year_level);
+                $('#section').val(student.section);
                 $('#enrollment_status').val(student.enrollment_status);
                 
                 if (student.photo) {
@@ -345,11 +347,13 @@ function validateForm() {
     const contactNumber = $('#contact_number').val().trim();
     const guardianName = $('#guardian_name').val().trim();
     const guardianContact = $('#guardian_contact').val().trim();
-    const course = $('#course_year_section').val();
+    const course = $('#course').val();
+    const yearLevel = $('#year_level').val();
+    const section = $('#section').val().trim();
     const enrollmentStatus = $('#enrollment_status').val();
 
     if (!studentNumber || !firstName || !lastName || !gender || !birthdate || !address || 
-        !contactNumber || !guardianName || !guardianContact || !course || !enrollmentStatus) {
+        !contactNumber || !guardianName || !guardianContact || !course || !yearLevel || !section || !enrollmentStatus) {
         Swal.fire({
             icon: 'error',
             title: 'Validation Error',
@@ -367,62 +371,59 @@ function formatDate(dateString) {
 }
 
 function exportToPDF() {
-    Swal.fire({
-        title: 'Export Students to PDF',
-        html: `
-            <select id="exportSection" class="swal2-input" style="width: 80%; display: block; margin: 10px auto;">
-                <option value="">All Students</option>
-                <optgroup label="BSEd">
-                    <option value="BSEd Filipino 1A">BSEd Filipino 1A</option>
-                    <option value="BSEd Filipino 2A">BSEd Filipino 2A</option>
-                    <option value="BSEd Mathematics 1A">BSEd Mathematics 1A</option>
-                    <option value="BSEd Mathematics 2A">BSEd Mathematics 2A</option>
-                </optgroup>
-                <optgroup label="BSIT (Industrial)">
-                    <option value="BSIT Automotive 1A">BSIT Automotive 1A</option>
-                    <option value="BSIT Electrical 1A">BSIT Electrical 1A</option>
-                    <option value="BSIT Electronics 1A">BSIT Electronics 1A</option>
-                    <option value="BSIT Food Service 1A">BSIT Food Service 1A</option>
-                </optgroup>
-                <optgroup label="BSCrim">
-                    <option value="BSCrim 1A">BSCrim 1A</option>
-                    <option value="BSCrim 2A">BSCrim 2A</option>
-                </optgroup>
-                <optgroup label="BTVTEd">
-                    <option value="BTVTEd Automotive 1A">BTVTEd Automotive 1A</option>
-                    <option value="BTVTEd Food Service 1A">BTVTEd Food Service 1A</option>
-                </optgroup>
-                <optgroup label="BSIT (Information Technology)">
-                    <option value="BSIT Web Development 1A">BSIT Web Development 1A</option>
-                    <option value="BSIT Networking 1A">BSIT Networking 1A</option>
-                </optgroup>
-                <optgroup label="BSHM">
-                    <option value="BSHM 1A">BSHM 1A</option>
-                    <option value="BSHM 2A">BSHM 2A</option>
-                </optgroup>
-                <optgroup label="BAT">
-                    <option value="BAT 1A">BAT 1A</option>
-                    <option value="BAT 2A">BAT 2A</option>
-                </optgroup>
-                <optgroup label="Technical">
-                    <option value="Automotive Technology NC1">Automotive Technology NC1</option>
-                    <option value="Electronics Technology NC1">Electronics Technology NC1</option>
-                    <option value="Electrical Technology NC1">Electrical Technology NC1</option>
-                </optgroup>
-            </select>
-        `,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Export',
-        cancelButtonText: 'Cancel',
-        preConfirm: () => {
-            return document.getElementById('exportSection').value;
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const section = result.value;
-            const url = section ? `export_students_pdf.php?section=${encodeURIComponent(section)}` : 'export_students_pdf.php';
-            window.location.href = url;
+    // Fetch unique course/year/section combinations from database
+    $.ajax({
+        url: 'php/controllers/student_controller.php',
+        method: 'POST',
+        data: { action: 'get_sections' },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                let options = '<option value="">All Students</option>';
+                
+                // Group by course
+                const grouped = {};
+                response.sections.forEach(section => {
+                    if (!grouped[section.course]) {
+                        grouped[section.course] = [];
+                    }
+                    grouped[section.course].push(section);
+                });
+                
+                // Build optgroups
+                for (const [course, sections] of Object.entries(grouped)) {
+                    options += `<optgroup label="${course}">`;
+                    sections.forEach(section => {
+                        const value = `${section.course} ${section.year_level}-${section.section}`;
+                        const label = `${section.course} ${section.year_level}-${section.section}`;
+                        options += `<option value="${value}">${label}</option>`;
+                    });
+                    options += '</optgroup>';
+                }
+                
+                Swal.fire({
+                    title: 'Export Students to PDF',
+                    html: `<select id="exportSection" class="swal2-input" style="width: 80%; display: block; margin: 10px auto;">${options}</select>`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Export',
+                    cancelButtonText: 'Cancel',
+                    preConfirm: () => {
+                        return document.getElementById('exportSection').value;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const section = result.value;
+                        const url = section ? `export_students_pdf.php?section=${encodeURIComponent(section)}` : 'export_students_pdf.php';
+                        window.location.href = url;
+                    }
+                });
+            } else {
+                Swal.fire('Error', 'Failed to load sections', 'error');
+            }
+        },
+        error: function() {
+            Swal.fire('Error', 'Failed to load sections', 'error');
         }
     });
 }

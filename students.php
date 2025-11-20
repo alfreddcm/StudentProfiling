@@ -40,42 +40,95 @@ include 'header.php';
                             <div class="col-md-3">
                                 <select class="form-select" id="sectionFilter">
                                     <option value="">All Sections</option>
-                                    <optgroup label="BSEd">
+                                    <optgroup label="BSEd - Filipino">
                                         <option value="BSEd Filipino 1A">BSEd Filipino 1A</option>
                                         <option value="BSEd Filipino 2A">BSEd Filipino 2A</option>
+                                        <option value="BSEd Filipino 3A">BSEd Filipino 3A</option>
+                                        <option value="BSEd Filipino 4A">BSEd Filipino 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSEd - Mathematics">
                                         <option value="BSEd Mathematics 1A">BSEd Mathematics 1A</option>
                                         <option value="BSEd Mathematics 2A">BSEd Mathematics 2A</option>
+                                        <option value="BSEd Mathematics 3A">BSEd Mathematics 3A</option>
+                                        <option value="BSEd Mathematics 4A">BSEd Mathematics 4A</option>
                                     </optgroup>
-                                    <optgroup label="BSIT (Industrial)">
+                                    <optgroup label="BSIT - Automotive">
                                         <option value="BSIT Automotive 1A">BSIT Automotive 1A</option>
+                                        <option value="BSIT Automotive 2A">BSIT Automotive 2A</option>
+                                        <option value="BSIT Automotive 3A">BSIT Automotive 3A</option>
+                                        <option value="BSIT Automotive 4A">BSIT Automotive 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT - Electrical">
                                         <option value="BSIT Electrical 1A">BSIT Electrical 1A</option>
+                                        <option value="BSIT Electrical 2A">BSIT Electrical 2A</option>
+                                        <option value="BSIT Electrical 3A">BSIT Electrical 3A</option>
+                                        <option value="BSIT Electrical 4A">BSIT Electrical 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT - Electronics">
                                         <option value="BSIT Electronics 1A">BSIT Electronics 1A</option>
+                                        <option value="BSIT Electronics 2A">BSIT Electronics 2A</option>
+                                        <option value="BSIT Electronics 3A">BSIT Electronics 3A</option>
+                                        <option value="BSIT Electronics 4A">BSIT Electronics 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT - Food Service">
                                         <option value="BSIT Food Service 1A">BSIT Food Service 1A</option>
+                                        <option value="BSIT Food Service 2A">BSIT Food Service 2A</option>
+                                        <option value="BSIT Food Service 3A">BSIT Food Service 3A</option>
+                                        <option value="BSIT Food Service 4A">BSIT Food Service 4A</option>
                                     </optgroup>
                                     <optgroup label="BSCrim">
                                         <option value="BSCrim 1A">BSCrim 1A</option>
                                         <option value="BSCrim 2A">BSCrim 2A</option>
+                                        <option value="BSCrim 3A">BSCrim 3A</option>
+                                        <option value="BSCrim 4A">BSCrim 4A</option>
                                     </optgroup>
-                                    <optgroup label="BTVTEd">
+                                    <optgroup label="BTVTEd - Automotive">
                                         <option value="BTVTEd Automotive 1A">BTVTEd Automotive 1A</option>
-                                        <option value="BTVTEd Food Service 1A">BTVTEd Food Service 1A</option>
+                                        <option value="BTVTEd Automotive 2A">BTVTEd Automotive 2A</option>
+                                        <option value="BTVTEd Automotive 3A">BTVTEd Automotive 3A</option>
+                                        <option value="BTVTEd Automotive 4A">BTVTEd Automotive 4A</option>
                                     </optgroup>
-                                    <optgroup label="BSIT (Information Technology)">
+                                    <optgroup label="BTVTEd - Food Service">
+                                        <option value="BTVTEd Food Service 1A">BTVTEd Food Service 1A</option>
+                                        <option value="BTVTEd Food Service 2A">BTVTEd Food Service 2A</option>
+                                        <option value="BTVTEd Food Service 3A">BTVTEd Food Service 3A</option>
+                                        <option value="BTVTEd Food Service 4A">BTVTEd Food Service 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT - Web Development">
                                         <option value="BSIT Web Development 1A">BSIT Web Development 1A</option>
+                                        <option value="BSIT Web Development 2A">BSIT Web Development 2A</option>
+                                        <option value="BSIT Web Development 3A">BSIT Web Development 3A</option>
+                                        <option value="BSIT Web Development 4A">BSIT Web Development 4A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT - Networking">
                                         <option value="BSIT Networking 1A">BSIT Networking 1A</option>
+                                        <option value="BSIT Networking 2A">BSIT Networking 2A</option>
+                                        <option value="BSIT Networking 3A">BSIT Networking 3A</option>
+                                        <option value="BSIT Networking 4A">BSIT Networking 4A</option>
                                     </optgroup>
                                     <optgroup label="BSHM">
                                         <option value="BSHM 1A">BSHM 1A</option>
                                         <option value="BSHM 2A">BSHM 2A</option>
+                                        <option value="BSHM 3A">BSHM 3A</option>
+                                        <option value="BSHM 4A">BSHM 4A</option>
                                     </optgroup>
                                     <optgroup label="BAT">
                                         <option value="BAT 1A">BAT 1A</option>
                                         <option value="BAT 2A">BAT 2A</option>
+                                        <option value="BAT 3A">BAT 3A</option>
+                                        <option value="BAT 4A">BAT 4A</option>
                                     </optgroup>
-                                    <optgroup label="Technical">
+                                    <optgroup label="Technical - Automotive">
                                         <option value="Automotive Technology NC1">Automotive Technology NC1</option>
+                                        <option value="Automotive Technology NC2">Automotive Technology NC2</option>
+                                    </optgroup>
+                                    <optgroup label="Technical - Electronics">
                                         <option value="Electronics Technology NC1">Electronics Technology NC1</option>
+                                        <option value="Electronics Technology NC2">Electronics Technology NC2</option>
+                                    </optgroup>
+                                    <optgroup label="Technical - Electrical">
                                         <option value="Electrical Technology NC1">Electrical Technology NC1</option>
+                                        <option value="Electrical Technology NC2">Electrical Technology NC2</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -223,30 +276,61 @@ include 'header.php';
                     
                     <h6 class="text-primary mb-3 mt-4">Academic Information</h6>
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="course_year_section" class="form-label">Course/Year/Section</label>
-                            <select class="form-select" id="course_year_section" name="course_year_section" required>
+                        <div class="col-md-4 mb-3">
+                            <label for="course" class="form-label">Course</label>
+                            <select class="form-select" id="course" name="course" required>
                                 <option value="">Select Course</option>
-                                <option value="BSIT 1A">BSIT 1A</option>
-                                <option value="BSIT 1B">BSIT 1B</option>
-                                <option value="BSIT 2A">BSIT 2A</option>
-                                <option value="BSIT 2B">BSIT 2B</option>
-                                <option value="BSIT 3A">BSIT 3A</option>
-                                <option value="BSIT 3B">BSIT 3B</option>
-                                <option value="BSIT 4A">BSIT 4A</option>
-                                <option value="BSIT 4B">BSIT 4B</option>
-                                <option value="BSCS 1A">BSCS 1A</option>
-                                <option value="BSCS 1B">BSCS 1B</option>
-                                <option value="BSCS 2A">BSCS 2A</option>
-                                <option value="BSCS 3A">BSCS 3A</option>
-                                <option value="BSCS 4A">BSCS 4A</option>
-                                <option value="BSBA 1A">BSBA 1A</option>
-                                <option value="BSBA 2A">BSBA 2A</option>
-                                <option value="BSBA 3A">BSBA 3A</option>
-                                <option value="BSBA 3C">BSBA 3C</option>
-                                <option value="BSBA 4A">BSBA 4A</option>
+                                <optgroup label="Bachelor of Secondary Education">
+                                    <option value="BSEd Filipino">BSEd - Filipino</option>
+                                    <option value="BSEd Mathematics">BSEd - Mathematics</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Science in Industrial Technology">
+                                    <option value="BSIT Automotive Technology">BSIT - Automotive Technology</option>
+                                    <option value="BSIT Electrical Technology">BSIT - Electrical Technology</option>
+                                    <option value="BSIT Electronics Technology">BSIT - Electronics Technology</option>
+                                    <option value="BSIT Food Service Management">BSIT - Food Service Management</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Science in Criminology">
+                                    <option value="BSCrim">BSCrim</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Technical-Vocational Teacher Education">
+                                    <option value="BTVTEd Automotive Technology">BTVTEd - Automotive Technology</option>
+                                    <option value="BTVTEd Food Service Management">BTVTEd - Food Service Management</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Science in Information Technology">
+                                    <option value="BSIT Web and Mobile Development">BSIT - Web and Mobile Development</option>
+                                    <option value="BSIT Networking and Security">BSIT - Networking and Security</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Science in Hospitality Management">
+                                    <option value="BSHM">BSHM</option>
+                                </optgroup>
+                                <optgroup label="Bachelor of Agricultural Technology">
+                                    <option value="BAT">BAT</option>
+                                </optgroup>
+                                <optgroup label="Technical Courses">
+                                    <option value="Automotive Technology">Automotive Technology</option>
+                                    <option value="Electronics Technology">Electronics Technology</option>
+                                    <option value="Electrical Technology">Electrical Technology</option>
+                                </optgroup>
                             </select>
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="year_level" class="form-label">Year Level</label>
+                            <select class="form-select" id="year_level" name="year_level" required>
+                                <option value="">Select Year</option>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                                <option value="5">5th Year</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="section" class="form-label">Section</label>
+                            <input type="text" class="form-control" id="section" name="section" placeholder="e.g., A, B, C" required>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="enrollment_status" class="form-label">Enrollment Status</label>
                             <select class="form-select" id="enrollment_status" name="enrollment_status" required>

@@ -39,7 +39,9 @@ CREATE TABLE `students` (
   `contact_number` varchar(20) NOT NULL,
   `guardian_name` varchar(100) NOT NULL,
   `guardian_contact` varchar(20) NOT NULL,
-  `course_year_section` varchar(50) NOT NULL,
+  `course` varchar(100) NOT NULL,
+  `year_level` int(11) NOT NULL,
+  `section` varchar(50) NOT NULL,
   `enrollment_status` varchar(20) DEFAULT 'Active',
   `photo` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()

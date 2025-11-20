@@ -1,6 +1,6 @@
 <?php
-require 'vendor/autoload.php';
-require_once 'php/db/connection.php';
+require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/php/db/connection.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -8,7 +8,20 @@ use Dompdf\Options;
 $section = isset($_GET['section']) ? mysqli_real_escape_string($conn, $_GET['section']) : '';
 
 if ($section) {
-    $query = "SELECT * FROM students WHERE course_year_section = '$section' ORDER BY last_name, first_name";
+    // Parse the section format: "Course YearLevel-Section"
+    // Example: "BSIT Automotive Technology 1-A"
+    $parts = explode(' ', $section);
+    $sectionPart = array_pop($parts);
+    $yearSection = explode('-', $sectionPart);
+    $yearLevel = $yearSection[0];
+    $sectionName = isset($yearSection[1]) ? $yearSection[1] : '';
+    $course = implode(' ', $parts);
+    
+    if ($sectionName) {
+        $query = "SELECT * FROM students WHERE course = '$course' AND year_level = '$yearLevel' AND section = '$sectionName' ORDER BY last_name, first_name";
+    } else {
+        $query = "SELECT * FROM students WHERE course = '$course' AND year_level = '$yearLevel' ORDER BY last_name, first_name";
+    }
 } else {
     $query = "SELECT * FROM students ORDER BY last_name, first_name";
 }
@@ -26,11 +39,13 @@ if (mysqli_num_rows($result) > 0) {
                    ($student['middle_name'] ? $student['middle_name'] . ' ' : '') . 
                    $student['last_name'];
         
+        $courseYearSection = $student['course'] . ' ' . $student['year_level'] . '-' . $student['section'];
+        
         $tableRows .= '<tr>
             <td style="text-align: center;">' . $count . '</td>
             <td>' . htmlspecialchars($student['student_number']) . '</td>
             <td>' . htmlspecialchars($fullName) . '</td>
-            <td>' . htmlspecialchars($student['course_year_section']) . '</td>
+            <td>' . htmlspecialchars($courseYearSection) . '</td>
             <td style="text-align: center;">' . htmlspecialchars($student['enrollment_status']) . '</td>
             <td style="text-align: center;">' . htmlspecialchars($student['gender']) . '</td>
         </tr>';

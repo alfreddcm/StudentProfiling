@@ -28,6 +28,9 @@ switch ($action) {
     case 'search':
         searchStudents($conn);
         break;
+    case 'get_sections':
+        getSections($conn);
+        break;
     default:
         echo json_encode(['success' => false, 'message' => 'Invalid action']);
         break;
@@ -44,12 +47,14 @@ function createStudent($conn) {
     $contact_number = mysqli_real_escape_string($conn, $_POST['contact_number']);
     $guardian_name = mysqli_real_escape_string($conn, $_POST['guardian_name']);
     $guardian_contact = mysqli_real_escape_string($conn, $_POST['guardian_contact']);
-    $course_year_section = mysqli_real_escape_string($conn, $_POST['course_year_section']);
+    $course = mysqli_real_escape_string($conn, $_POST['course']);
+    $year_level = mysqli_real_escape_string($conn, $_POST['year_level']);
+    $section = mysqli_real_escape_string($conn, $_POST['section']);
     $enrollment_status = mysqli_real_escape_string($conn, $_POST['enrollment_status']);
 
     if (empty($student_number) || empty($first_name) || empty($last_name) || empty($gender) || 
         empty($birthdate) || empty($address) || empty($contact_number) || empty($guardian_name) || 
-        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status)) {
+        empty($guardian_contact) || empty($course) || empty($year_level) || empty($section) || empty($enrollment_status)) {
         echo json_encode(['success' => false, 'message' => 'All required fields must be filled']);
         exit();
     }
@@ -86,10 +91,10 @@ function createStudent($conn) {
     }
 
     $query = "INSERT INTO students (student_number, first_name, last_name, middle_name, gender, birthdate, 
-              address, contact_number, guardian_name, guardian_contact, course_year_section, enrollment_status, 
+              address, contact_number, guardian_name, guardian_contact, course, year_level, section, enrollment_status, 
               photo) VALUES ('$student_number', '$first_name', '$last_name', '$middle_name', '$gender', 
-              '$birthdate', '$address', '$contact_number', '$guardian_name', '$guardian_contact', '$course_year_section', 
-              '$enrollment_status', '$photo_path')";
+              '$birthdate', '$address', '$contact_number', '$guardian_name', '$guardian_contact', '$course', 
+              '$year_level', '$section', '$enrollment_status', '$photo_path')";
     
     if (mysqli_query($conn, $query)) {
         echo json_encode(['success' => true, 'message' => 'Student added successfully']);
@@ -122,12 +127,14 @@ function updateStudent($conn) {
     $contact_number = mysqli_real_escape_string($conn, $_POST['contact_number']);
     $guardian_name = mysqli_real_escape_string($conn, $_POST['guardian_name']);
     $guardian_contact = mysqli_real_escape_string($conn, $_POST['guardian_contact']);
-    $course_year_section = mysqli_real_escape_string($conn, $_POST['course_year_section']);
+    $course = mysqli_real_escape_string($conn, $_POST['course']);
+    $year_level = mysqli_real_escape_string($conn, $_POST['year_level']);
+    $section = mysqli_real_escape_string($conn, $_POST['section']);
     $enrollment_status = mysqli_real_escape_string($conn, $_POST['enrollment_status']);
 
     if (empty($id) || empty($student_number) || empty($first_name) || empty($last_name) || empty($gender) || 
         empty($birthdate) || empty($address) || empty($contact_number) || empty($guardian_name) || 
-        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status)) {
+        empty($guardian_contact) || empty($course) || empty($year_level) || empty($section) || empty($enrollment_status)) {
         echo json_encode(['success' => false, 'message' => 'All required fields must be filled']);
         exit();
     }
@@ -179,7 +186,9 @@ function updateStudent($conn) {
               contact_number = '$contact_number',
               guardian_name = '$guardian_name',
               guardian_contact = '$guardian_contact',
-              course_year_section = '$course_year_section',
+              course = '$course',
+              year_level = '$year_level',
+              section = '$section',
               enrollment_status = '$enrollment_status',
               photo = '$photo_path'
               WHERE id = '$id'";
@@ -245,7 +254,8 @@ function searchStudents($conn) {
               first_name LIKE '%$search%' OR
               last_name LIKE '%$search%' OR
               middle_name LIKE '%$search%' OR
-              course_year_section LIKE '%$search%' OR
+              course LIKE '%$search%' OR
+              section LIKE '%$search%' OR
               enrollment_status LIKE '%$search%'
               ORDER BY created_at DESC";
     
@@ -257,5 +267,26 @@ function searchStudents($conn) {
     }
     
     echo json_encode(['success' => true, 'data' => $students]);
+}
+
+function getSections($conn) {
+    try {
+        $query = "SELECT DISTINCT course, year_level, section 
+                  FROM students 
+                  ORDER BY course, year_level, section";
+        $result = mysqli_query($conn, $query);
+        
+        if ($result) {
+            $sections = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $sections[] = $row;
+            }
+            echo json_encode(['success' => true, 'sections' => $sections]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Query failed']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    }
 }
 ?>
