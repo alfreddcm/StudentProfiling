@@ -146,6 +146,6 @@ $dompdf->render();
 $filename = $section ? 'Student_List_' . str_replace(' ', '_', $section) . '_' . date('Y-m-d') . '.pdf' 
                       : 'Student_List_All_' . date('Y-m-d') . '.pdf';
 
-                      
 $dompdf->stream($filename, array("Attachment" => true));
 ?>
+

@@ -40,15 +40,43 @@ include 'header.php';
                             <div class="col-md-3">
                                 <select class="form-select" id="sectionFilter">
                                     <option value="">All Sections</option>
-                                    <option value="BSCS 1A">BSCS 1A</option>
-                                    <option value="BSCS 2A">BSCS 2A</option>
-                                    <option value="BSCS 3A">BSCS 3A</option>
-                                    <option value="BSCS 4A">BSCS 4A</option>
-                                    <option value="BSBA 1A">BSBA 1A</option>
-                                    <option value="BSBA 2A">BSBA 2A</option>
-                                    <option value="BSBA 3A">BSBA 3A</option>
-                                    <option value="BSBA 3C">BSBA 3C</option>
-                                    <option value="BSBA 4A">BSBA 4A</option>
+                                    <optgroup label="BSEd">
+                                        <option value="BSEd Filipino 1A">BSEd Filipino 1A</option>
+                                        <option value="BSEd Filipino 2A">BSEd Filipino 2A</option>
+                                        <option value="BSEd Mathematics 1A">BSEd Mathematics 1A</option>
+                                        <option value="BSEd Mathematics 2A">BSEd Mathematics 2A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT (Industrial)">
+                                        <option value="BSIT Automotive 1A">BSIT Automotive 1A</option>
+                                        <option value="BSIT Electrical 1A">BSIT Electrical 1A</option>
+                                        <option value="BSIT Electronics 1A">BSIT Electronics 1A</option>
+                                        <option value="BSIT Food Service 1A">BSIT Food Service 1A</option>
+                                    </optgroup>
+                                    <optgroup label="BSCrim">
+                                        <option value="BSCrim 1A">BSCrim 1A</option>
+                                        <option value="BSCrim 2A">BSCrim 2A</option>
+                                    </optgroup>
+                                    <optgroup label="BTVTEd">
+                                        <option value="BTVTEd Automotive 1A">BTVTEd Automotive 1A</option>
+                                        <option value="BTVTEd Food Service 1A">BTVTEd Food Service 1A</option>
+                                    </optgroup>
+                                    <optgroup label="BSIT (Information Technology)">
+                                        <option value="BSIT Web Development 1A">BSIT Web Development 1A</option>
+                                        <option value="BSIT Networking 1A">BSIT Networking 1A</option>
+                                    </optgroup>
+                                    <optgroup label="BSHM">
+                                        <option value="BSHM 1A">BSHM 1A</option>
+                                        <option value="BSHM 2A">BSHM 2A</option>
+                                    </optgroup>
+                                    <optgroup label="BAT">
+                                        <option value="BAT 1A">BAT 1A</option>
+                                        <option value="BAT 2A">BAT 2A</option>
+                                    </optgroup>
+                                    <optgroup label="Technical">
+                                        <option value="Automotive Technology NC1">Automotive Technology NC1</option>
+                                        <option value="Electronics Technology NC1">Electronics Technology NC1</option>
+                                        <option value="Electrical Technology NC1">Electrical Technology NC1</option>
+                                    </optgroup>
                                 </select>
                             </div>
                             <div class="col-md-5 text-end">
