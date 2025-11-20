@@ -166,9 +166,7 @@ function displayStudents(students) {
                     <button class="btn btn-sm btn-danger" onclick="deleteStudent(${student.id})" title="Delete">
                         <i class="bi bi-trash"></i>
                     </button>
-                    <a href="pdf/generate_student_profile.php?id=${student.id}" target="_blank" class="btn btn-sm btn-secondary" title="Download PDF">
-                        <i class="bi bi-file-pdf"></i>
-                    </a>
+                    
                 </td>
             </tr>
         `;
