@@ -108,11 +108,6 @@ $pdf->SetFont('Arial', '', 10);
 $pdf->Cell(0, 8, $student['enrollment_status'], 0, 1);
 
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(60, 8, 'Academic Risk Level:', 0, 0);
-$pdf->SetFont('Arial', '', 10);
-$pdf->Cell(0, 8, $student['academic_risk_level'], 0, 1);
-
-$pdf->SetFont('Arial', 'B', 10);
 $pdf->Cell(60, 8, 'Date Registered:', 0, 0);
 $pdf->SetFont('Arial', '', 10);
 $pdf->Cell(0, 8, date('F d, Y', strtotime($student['created_at'])), 0, 1);

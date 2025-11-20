@@ -42,11 +42,11 @@ include 'header.php';
                             <table class="table table-hover" id="studentsTable">
                                 <thead>
                                     <tr>
+                                        <th>Photo</th>
                                         <th>Student Number</th>
                                         <th>Name</th>
                                         <th>Course/Year/Section</th>
                                         <th>Status</th>
-                                        <th>Risk Level</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -71,9 +71,48 @@ include 'header.php';
                 <h5 class="modal-title" id="modalTitle">Add Student</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="studentForm">
+            <form id="studentForm" enctype="multipart/form-data">
                 <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
                     <input type="hidden" id="student_id" name="student_id">
+                    <input type="hidden" id="existing_photo" name="existing_photo">
+                    
+                    <h6 class="text-primary mb-3">Student Photo</h6>
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <div class="photo-preview-container mb-3">
+                                    <div id="photoPreview" class="photo-preview">
+                                        <i class="fas fa-user fa-5x text-secondary"></i>
+                                    </div>
+                                </div>
+                                <div class="btn-group mb-2" role="group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="document.getElementById('photo_file').click()">
+                                        <i class="fas fa-upload"></i> Upload Photo
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="cameraBtn">
+                                        <i class="fas fa-camera"></i> Take Photo
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" id="removePhotoBtn" style="display:none;">
+                                        <i class="fas fa-times"></i> Remove
+                                    </button>
+                                </div>
+                                <input type="file" id="photo_file" name="photo_file" accept="image/*" style="display:none;">
+                                <input type="hidden" id="photo_data" name="photo_data">
+                                <div id="cameraContainer" style="display:none;" class="mt-3">
+                                    <video id="cameraStream" width="320" height="240" autoplay class="border rounded"></video>
+                                    <canvas id="cameraCanvas" style="display:none;"></canvas>
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-success btn-sm" id="captureBtn">
+                                            <i class="fas fa-camera"></i> Capture
+                                        </button>
+                                        <button type="button" class="btn btn-secondary btn-sm" id="closeCameraBtn">
+                                            <i class="fas fa-times"></i> Close Camera
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <h6 class="text-primary mb-3">Personal Information</h6>
                     <div class="row">
@@ -114,7 +153,7 @@ include 'header.php';
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="contact_number" class="form-label">Contact Number</label>
-                            <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+                            <input type="text" class="form-control" id="contact_number" name="contact_number" pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                         </div>
                     </div>
                     
@@ -131,7 +170,7 @@ include 'header.php';
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="guardian_contact" class="form-label">Guardian Contact</label>
-                            <input type="text" class="form-control" id="guardian_contact" name="guardian_contact" required>
+                            <input type="text" class="form-control" id="guardian_contact" name="guardian_contact" pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
                         </div>
                     </div>
                     
@@ -172,14 +211,6 @@ include 'header.php';
                         </div>
                     </div>
                     
-                    <div class="mb-3">
-                        <label for="academic_risk_level" class="form-label">Academic Risk Level</label>
-                        <select class="form-select" id="academic_risk_level" name="academic_risk_level" required>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

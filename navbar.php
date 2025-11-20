@@ -4,7 +4,7 @@
             <i class="bi bi-list fs-4"></i>
         </button>
         <div class="ms-auto d-flex align-items-center">
-            <span class="me-3">Welcome, <strong><?php echo $_SESSION['full_name']; ?></strong></span>
+            <span class="me-3">Welcome, <strong><?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : $_SESSION['username']; ?></strong></span>
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle"></i>

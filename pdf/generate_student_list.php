@@ -22,8 +22,7 @@ class PDF extends FPDF
         $this->Cell(30, 8, 'Student No.', 1, 0, 'C', true);
         $this->Cell(60, 8, 'Full Name', 1, 0, 'C', true);
         $this->Cell(40, 8, 'Course/Yr/Sec', 1, 0, 'C', true);
-        $this->Cell(30, 8, 'Status', 1, 0, 'C', true);
-        $this->Cell(30, 8, 'Risk Level', 1, 1, 'C', true);
+        $this->Cell(60, 8, 'Status', 1, 1, 'C', true);
     }
 
     function Footer()
@@ -45,8 +44,7 @@ while ($student = mysqli_fetch_assoc($result)) {
     $pdf->Cell(30, 7, $student['student_number'], 1, 0, 'C');
     $pdf->Cell(60, 7, $fullName, 1, 0, 'L');
     $pdf->Cell(40, 7, $student['course_year_section'], 1, 0, 'C');
-    $pdf->Cell(30, 7, $student['enrollment_status'], 1, 0, 'C');
-    $pdf->Cell(30, 7, $student['academic_risk_level'], 1, 1, 'C');
+    $pdf->Cell(60, 7, $student['enrollment_status'], 1, 1, 'C');
     
     $count++;
 }

@@ -240,3 +240,55 @@ body {
 .dropdown-item:hover {
     background-color: #f8f9fa;
 }
+
+.photo-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-preview {
+    width: 200px;
+    height: 200px;
+    border: 3px dashed #dee2e6;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-preview i {
+    color: #adb5bd;
+}
+
+#cameraStream {
+    display: block;
+    margin: 0 auto;
+}
+
+.student-photo-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #dee2e6;
+}
+
+.student-photo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #dee2e6;
+}

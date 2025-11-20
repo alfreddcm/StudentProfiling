@@ -1,4 +1,5 @@
 let studentsData = [];
+let cameraStream = null;
 
 $(document).ready(function() {
     loadStudents();
@@ -10,6 +11,48 @@ $(document).ready(function() {
         } else {
             loadStudents();
         }
+    });
+
+    $('#photo_file').on('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 5000000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Too Large',
+                    text: 'Photo size must be less than 5MB'
+                });
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                $('#photoPreview').html('<img src="' + event.target.result + '" alt="Photo">');
+                $('#photo_data').val(event.target.result);
+                $('#removePhotoBtn').show();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $('#cameraBtn').on('click', function() {
+        openCamera();
+    });
+
+    $('#captureBtn').on('click', function() {
+        capturePhoto();
+    });
+
+    $('#closeCameraBtn').on('click', function() {
+        closeCamera();
+    });
+
+    $('#removePhotoBtn').on('click', function() {
+        $('#photoPreview').html('<i class="fas fa-user fa-5x text-secondary"></i>');
+        $('#photo_data').val('');
+        $('#photo_file').val('');
+        $('#existing_photo').val('');
+        $(this).hide();
     });
 
     $('#studentForm').on('submit', function(e) {
@@ -97,18 +140,21 @@ function displayStudents(students) {
         if (student.enrollment_status === 'Inactive') statusBadge = 'badge bg-secondary';
         if (student.enrollment_status === 'Dropped') statusBadge = 'badge bg-danger';
         if (student.enrollment_status === 'Graduated') statusBadge = 'badge bg-primary';
-        
-        let riskBadge = 'badge bg-success';
-        if (student.academic_risk_level === 'Medium') riskBadge = 'badge bg-warning';
-        if (student.academic_risk_level === 'High') riskBadge = 'badge bg-danger';
+
+        let photoHtml = '';
+        if (student.photo) {
+            photoHtml = `<img src="${student.photo}" alt="Photo" class="student-photo-thumb">`;
+        } else {
+            photoHtml = `<div class="student-photo-icon"><i class="fas fa-user"></i></div>`;
+        }
 
         const row = `
             <tr class="${rowClass}">
+                <td>${photoHtml}</td>
                 <td>${student.student_number} ${isNew ? '<span class="badge bg-success">New</span>' : ''}</td>
                 <td>${fullName}</td>
                 <td>${student.course_year_section}</td>
                 <td><span class="${statusBadge}">${student.enrollment_status}</span></td>
-                <td><span class="${riskBadge}">${student.academic_risk_level}</span></td>
                 <td>
                     <button class="btn btn-sm btn-info" onclick="editStudent(${student.id})" title="Edit">
                         <i class="bi bi-pencil"></i>
@@ -148,7 +194,17 @@ function editStudent(id) {
                 $('#guardian_contact').val(student.guardian_contact);
                 $('#course_year_section').val(student.course_year_section);
                 $('#enrollment_status').val(student.enrollment_status);
-                $('#academic_risk_level').val(student.academic_risk_level);
+                
+                if (student.photo) {
+                    $('#photoPreview').html('<img src="' + student.photo + '" alt="Photo">');
+                    $('#existing_photo').val(student.photo);
+                    $('#removePhotoBtn').show();
+                } else {
+                    $('#photoPreview').html('<i class="fas fa-user fa-5x text-secondary"></i>');
+                    $('#existing_photo').val('');
+                    $('#removePhotoBtn').hide();
+                }
+                
                 $('#modalTitle').text('Edit Student');
                 $('#submitBtn').text('Update Student');
                 $('#studentModal').modal('show');
@@ -216,8 +272,55 @@ function searchStudents(searchTerm) {
 function resetForm() {
     $('#studentForm')[0].reset();
     $('#student_id').val('');
+    $('#photo_data').val('');
+    $('#existing_photo').val('');
+    $('#photoPreview').html('<i class="fas fa-user fa-5x text-secondary"></i>');
+    $('#removePhotoBtn').hide();
     $('#modalTitle').text('Add Student');
     $('#submitBtn').text('Save Student');
+    closeCamera();
+}
+
+function openCamera() {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function(stream) {
+            cameraStream = stream;
+            const video = document.getElementById('cameraStream');
+            video.srcObject = stream;
+            $('#cameraContainer').show();
+        })
+        .catch(function(err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Camera Error',
+                text: 'Unable to access camera. Please check permissions.'
+            });
+        });
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraStream');
+    const canvas = document.getElementById('cameraCanvas');
+    const context = canvas.getContext('2d');
+    
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    
+    const imageData = canvas.toDataURL('image/jpeg');
+    $('#photoPreview').html('<img src="' + imageData + '" alt="Photo">');
+    $('#photo_data').val(imageData);
+    $('#removePhotoBtn').show();
+    
+    closeCamera();
+}
+
+function closeCamera() {
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+    $('#cameraContainer').hide();
 }
 
 function validateForm() {
@@ -232,10 +335,9 @@ function validateForm() {
     const guardianContact = $('#guardian_contact').val().trim();
     const course = $('#course_year_section').val();
     const enrollmentStatus = $('#enrollment_status').val();
-    const riskLevel = $('#academic_risk_level').val();
 
     if (!studentNumber || !firstName || !lastName || !gender || !birthdate || !address || 
-        !contactNumber || !guardianName || !guardianContact || !course || !enrollmentStatus || !riskLevel) {
+        !contactNumber || !guardianName || !guardianContact || !course || !enrollmentStatus) {
         Swal.fire({
             icon: 'error',
             title: 'Validation Error',

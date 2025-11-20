@@ -46,12 +46,10 @@ function createStudent($conn) {
     $guardian_contact = mysqli_real_escape_string($conn, $_POST['guardian_contact']);
     $course_year_section = mysqli_real_escape_string($conn, $_POST['course_year_section']);
     $enrollment_status = mysqli_real_escape_string($conn, $_POST['enrollment_status']);
-    $academic_risk_level = mysqli_real_escape_string($conn, $_POST['academic_risk_level']);
 
     if (empty($student_number) || empty($first_name) || empty($last_name) || empty($gender) || 
         empty($birthdate) || empty($address) || empty($contact_number) || empty($guardian_name) || 
-        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status) || 
-        empty($academic_risk_level)) {
+        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status)) {
         echo json_encode(['success' => false, 'message' => 'All required fields must be filled']);
         exit();
     }
@@ -64,11 +62,34 @@ function createStudent($conn) {
         exit();
     }
 
+    $photo_path = null;
+    if (!empty($_POST['photo_data'])) {
+        $photo_data = $_POST['photo_data'];
+        if (preg_match('/^data:image\/(\w+);base64,/', $photo_data, $type)) {
+            $photo_data = substr($photo_data, strpos($photo_data, ',') + 1);
+            $type = strtolower($type[1]);
+            $photo_data = base64_decode($photo_data);
+            
+            if ($photo_data !== false) {
+                $upload_dir = '../../uploads/students/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+                $filename = 'student_' . time() . '_' . uniqid() . '.' . $type;
+                $filepath = $upload_dir . $filename;
+                
+                if (file_put_contents($filepath, $photo_data)) {
+                    $photo_path = 'uploads/students/' . $filename;
+                }
+            }
+        }
+    }
+
     $query = "INSERT INTO students (student_number, first_name, last_name, middle_name, gender, birthdate, 
               address, contact_number, guardian_name, guardian_contact, course_year_section, enrollment_status, 
-              academic_risk_level) VALUES ('$student_number', '$first_name', '$last_name', '$middle_name', '$gender', 
+              photo) VALUES ('$student_number', '$first_name', '$last_name', '$middle_name', '$gender', 
               '$birthdate', '$address', '$contact_number', '$guardian_name', '$guardian_contact', '$course_year_section', 
-              '$enrollment_status', '$academic_risk_level')";
+              '$enrollment_status', '$photo_path')";
     
     if (mysqli_query($conn, $query)) {
         echo json_encode(['success' => true, 'message' => 'Student added successfully']);
@@ -103,12 +124,10 @@ function updateStudent($conn) {
     $guardian_contact = mysqli_real_escape_string($conn, $_POST['guardian_contact']);
     $course_year_section = mysqli_real_escape_string($conn, $_POST['course_year_section']);
     $enrollment_status = mysqli_real_escape_string($conn, $_POST['enrollment_status']);
-    $academic_risk_level = mysqli_real_escape_string($conn, $_POST['academic_risk_level']);
 
     if (empty($id) || empty($student_number) || empty($first_name) || empty($last_name) || empty($gender) || 
         empty($birthdate) || empty($address) || empty($contact_number) || empty($guardian_name) || 
-        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status) || 
-        empty($academic_risk_level)) {
+        empty($guardian_contact) || empty($course_year_section) || empty($enrollment_status)) {
         echo json_encode(['success' => false, 'message' => 'All required fields must be filled']);
         exit();
     }
@@ -119,6 +138,34 @@ function updateStudent($conn) {
     if (mysqli_num_rows($check_result) > 0) {
         echo json_encode(['success' => false, 'message' => 'Student number already exists']);
         exit();
+    }
+
+    $photo_path = mysqli_real_escape_string($conn, $_POST['existing_photo']);
+    
+    if (!empty($_POST['photo_data'])) {
+        $photo_data = $_POST['photo_data'];
+        if (preg_match('/^data:image\/(\w+);base64,/', $photo_data, $type)) {
+            $photo_data = substr($photo_data, strpos($photo_data, ',') + 1);
+            $type = strtolower($type[1]);
+            $photo_data = base64_decode($photo_data);
+            
+            if ($photo_data !== false) {
+                if (!empty($photo_path) && file_exists('../../' . $photo_path)) {
+                    unlink('../../' . $photo_path);
+                }
+                
+                $upload_dir = '../../uploads/students/';
+                if (!file_exists($upload_dir)) {
+                    mkdir($upload_dir, 0777, true);
+                }
+                $filename = 'student_' . time() . '_' . uniqid() . '.' . $type;
+                $filepath = $upload_dir . $filename;
+                
+                if (file_put_contents($filepath, $photo_data)) {
+                    $photo_path = 'uploads/students/' . $filename;
+                }
+            }
+        }
     }
 
     $query = "UPDATE students SET 
@@ -134,7 +181,7 @@ function updateStudent($conn) {
               guardian_contact = '$guardian_contact',
               course_year_section = '$course_year_section',
               enrollment_status = '$enrollment_status',
-              academic_risk_level = '$academic_risk_level'
+              photo = '$photo_path'
               WHERE id = '$id'";
     
     if (mysqli_query($conn, $query)) {
@@ -150,6 +197,16 @@ function deleteStudent($conn) {
     if (empty($id)) {
         echo json_encode(['success' => false, 'message' => 'Student ID is required']);
         exit();
+    }
+
+    $get_query = "SELECT photo FROM students WHERE id = '$id'";
+    $get_result = mysqli_query($conn, $get_query);
+    
+    if (mysqli_num_rows($get_result) > 0) {
+        $student = mysqli_fetch_assoc($get_result);
+        if (!empty($student['photo']) && file_exists('../../' . $student['photo'])) {
+            unlink('../../' . $student['photo']);
+        }
     }
 
     $query = "DELETE FROM students WHERE id = '$id'";
@@ -189,8 +246,7 @@ function searchStudents($conn) {
               last_name LIKE '%$search%' OR
               middle_name LIKE '%$search%' OR
               course_year_section LIKE '%$search%' OR
-              enrollment_status LIKE '%$search%' OR
-              academic_risk_level LIKE '%$search%'
+              enrollment_status LIKE '%$search%'
               ORDER BY created_at DESC";
     
     $result = mysqli_query($conn, $query);
