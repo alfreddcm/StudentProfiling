@@ -9,8 +9,12 @@ $(document).ready(function() {
         if (searchTerm.length > 0) {
             searchStudents(searchTerm);
         } else {
-            loadStudents();
+            filterBySection();
         }
+    });
+
+    $('#sectionFilter').on('change', function() {
+        filterBySection();
     });
 
     $('#photo_file').on('change', function(e) {
@@ -269,6 +273,16 @@ function searchStudents(searchTerm) {
     });
 }
 
+function filterBySection() {
+    const section = $('#sectionFilter').val();
+    if (section) {
+        const filtered = studentsData.filter(student => student.course_year_section === section);
+        displayStudents(filtered);
+    } else {
+        displayStudents(studentsData);
+    }
+}
+
 function resetForm() {
     $('#studentForm')[0].reset();
     $('#student_id').val('');
@@ -352,4 +366,37 @@ function validateForm() {
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function exportToPDF() {
+    Swal.fire({
+        title: 'Export Students to PDF',
+        html: `
+            <select id="exportSection" class="swal2-input" style="width: 80%; display: block; margin: 10px auto;">
+                <option value="">All Students</option>
+                <option value="BSCS 1A">BSCS 1A</option>
+                <option value="BSCS 2A">BSCS 2A</option>
+                <option value="BSCS 3A">BSCS 3A</option>
+                <option value="BSCS 4A">BSCS 4A</option>
+                <option value="BSBA 1A">BSBA 1A</option>
+                <option value="BSBA 2A">BSBA 2A</option>
+                <option value="BSBA 3A">BSBA 3A</option>
+                <option value="BSBA 3C">BSBA 3C</option>
+                <option value="BSBA 4A">BSBA 4A</option>
+            </select>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Export',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            return document.getElementById('exportSection').value;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const section = result.value;
+            const url = section ? `export_students_pdf.php?section=${encodeURIComponent(section)}` : 'export_students_pdf.php';
+            window.location.href = url;
+        }
+    });
 }

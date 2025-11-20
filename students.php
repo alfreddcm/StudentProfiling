@@ -34,8 +34,27 @@ include 'header.php';
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <input type="text" class="form-control" id="searchInput" placeholder="Search students...">
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="sectionFilter">
+                                    <option value="">All Sections</option>
+                                    <option value="BSCS 1A">BSCS 1A</option>
+                                    <option value="BSCS 2A">BSCS 2A</option>
+                                    <option value="BSCS 3A">BSCS 3A</option>
+                                    <option value="BSCS 4A">BSCS 4A</option>
+                                    <option value="BSBA 1A">BSBA 1A</option>
+                                    <option value="BSBA 2A">BSBA 2A</option>
+                                    <option value="BSBA 3A">BSBA 3A</option>
+                                    <option value="BSBA 3C">BSBA 3C</option>
+                                    <option value="BSBA 4A">BSBA 4A</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5 text-end">
+                                <button class="btn btn-success" onclick="exportToPDF()">
+                                    <i class="bi bi-file-pdf"></i> Export to PDF
+                                </button>
                             </div>
                         </div>
                         <div class="table-responsive">
