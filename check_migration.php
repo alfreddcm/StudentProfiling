@@ -4,7 +4,8 @@
 
 require_once 'php/db/connection.php';
 
-// Check if migration is needed
+// Check if database migration is needed
+// This checks if the new course column structure exists
 $check_query = "SHOW COLUMNS FROM students LIKE 'course'";
 $result = mysqli_query($conn, $check_query);
 

@@ -1,7 +1,9 @@
+<!-- Left Sidebar Navigation -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <h4><i class="bi bi-mortarboard-fill"></i> Student Profiling</h4>
     </div>
+    <!-- Navigation Menu -->
     <ul class="nav flex-column">
         <li class="nav-item">
             <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : ''; ?>" href="dashboard.php">

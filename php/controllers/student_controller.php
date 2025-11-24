@@ -2,6 +2,7 @@
 require_once '../db/connection.php';
 header('Content-Type: application/json');
 
+// Check if request method is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit();
@@ -9,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $action = $_POST['action'] ?? '';
 
+// Handle different CRUD operations based on action parameter
 switch ($action) {
     case 'create':
         createStudent($conn);
@@ -36,6 +38,7 @@ switch ($action) {
         break;
 }
 
+// Adding/inserting student info to database
 function createStudent($conn) {
     $student_number = mysqli_real_escape_string($conn, $_POST['student_number']);
     $first_name = mysqli_real_escape_string($conn, $_POST['first_name']);
@@ -103,6 +106,7 @@ function createStudent($conn) {
     }
 }
 
+// Fetching student data
 function readStudents($conn) {
     $query = "SELECT * FROM students ORDER BY created_at DESC";
     $result = mysqli_query($conn, $query);
@@ -115,6 +119,7 @@ function readStudents($conn) {
     echo json_encode(['success' => true, 'data' => $students]);
 }
 
+// Updating student information
 function updateStudent($conn) {
     $id = mysqli_real_escape_string($conn, $_POST['student_id']);
     $student_number = mysqli_real_escape_string($conn, $_POST['student_number']);
@@ -200,6 +205,7 @@ function updateStudent($conn) {
     }
 }
 
+// Deleting student from database
 function deleteStudent($conn) {
     $id = mysqli_real_escape_string($conn, $_POST['student_id']);
     
@@ -227,6 +233,7 @@ function deleteStudent($conn) {
     }
 }
 
+// Getting single student by ID
 function getStudent($conn) {
     $id = mysqli_real_escape_string($conn, $_POST['student_id']);
     
@@ -246,6 +253,7 @@ function getStudent($conn) {
     }
 }
 
+// Searching students by various fields
 function searchStudents($conn) {
     $search = mysqli_real_escape_string($conn, $_POST['search']);
     
@@ -269,6 +277,7 @@ function searchStudents($conn) {
     echo json_encode(['success' => true, 'data' => $students]);
 }
 
+// Getting distinct sections from students
 function getSections($conn) {
     try {
         $query = "SELECT DISTINCT course, year_level, section 

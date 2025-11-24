@@ -1,8 +1,10 @@
 <?php
 require_once 'php/db/connection.php';
 
+// Get section filter for printing
 $section = isset($_GET['section']) ? mysqli_real_escape_string($conn, $_GET['section']) : '';
 
+// Build query for printing
 if ($section) {
     $query = "SELECT * FROM students WHERE course_year_section = '$section' ORDER BY last_name, first_name";
 } else {

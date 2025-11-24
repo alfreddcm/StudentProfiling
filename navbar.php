@@ -1,3 +1,4 @@
+<!-- Top Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-fluid">
         <button class="btn btn-link" id="sidebarToggle">
@@ -5,6 +6,7 @@
         </button>
         <div class="ms-auto d-flex align-items-center">
             <span class="me-3">Welcome, <strong><?php echo isset($_SESSION['full_name']) ? $_SESSION['full_name'] : $_SESSION['username']; ?></strong></span>
+            <!-- User Dropdown Menu -->
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle"></i>

@@ -5,11 +5,11 @@ require_once __DIR__ . '/php/db/connection.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
+// Get section filter from URL parameter
 $section = isset($_GET['section']) ? mysqli_real_escape_string($conn, $_GET['section']) : '';
 
+// Build query based on section filter
 if ($section) {
-    // Parse the section format: "Course YearLevel-Section"
-    // Example: "BSIT Automotive Technology 1-A"
     $parts = explode(' ', $section);
     $sectionPart = array_pop($parts);
     $yearSection = explode('-', $sectionPart);
@@ -28,7 +28,7 @@ if ($section) {
 
 $result = mysqli_query($conn, $query);
 
-// Build table rows
+// Build table rows for PDF
 $tableRows = '';
 $count = 0;
 

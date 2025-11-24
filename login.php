@@ -1,4 +1,8 @@
-<?php require_once 'php/auth/check_guest.php'; ?>
+<?php 
+require_once 'php/auth/check_guest.php'; 
+// Check if database migration is needed
+include_once 'check_migration.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +21,7 @@
                 <h3 class="mt-2">Student Profiling System</h3>
                 <p class="text-muted">Please login to continue</p>
             </div>
+            <!-- Login form -->
             <form id="loginForm">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>

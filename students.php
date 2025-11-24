@@ -19,6 +19,7 @@ include 'header.php';
                     </div>
                 </div>
 
+                <!-- Student Management Card -->
                 <div class="card">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -33,6 +34,7 @@ include 'header.php';
                         </div>
                     </div>
                     <div class="card-body">
+                        <!-- Search and Filter Controls -->
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <input type="text" class="form-control" id="searchInput" placeholder="Search students...">

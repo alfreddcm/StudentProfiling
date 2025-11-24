@@ -4,6 +4,7 @@ require_once '../db/connection.php';
 
 header('Content-Type: application/json');
 
+// Check if request method is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit();
@@ -12,11 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $username = mysqli_real_escape_string($conn, $_POST['username']);
 $password = $_POST['password'];
 
+// Validate required fields
 if (empty($username) || empty($password)) {
     echo json_encode(['success' => false, 'message' => 'Username and password are required']);
     exit();
 }
 
+// Look up user in database
 $query = "SELECT * FROM users WHERE username = '$username'";
 $result = mysqli_query($conn, $query);
 
@@ -27,11 +30,13 @@ if (mysqli_num_rows($result) === 0) {
 
 $user = mysqli_fetch_assoc($result);
 
+// Verify password
 if (!password_verify($password, $user['password'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
     exit();
 }
 
+// Set up user session
 $_SESSION['user_id'] = $user['id'];
 $_SESSION['username'] = $user['username'];
 $_SESSION['full_name'] = $user['full_name'];

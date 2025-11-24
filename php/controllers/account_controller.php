@@ -3,11 +3,13 @@ session_start();
 require_once '../db/connection.php';
 header('Content-Type: application/json');
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit();
 }
 
+// Check if request method is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit();
@@ -15,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $action = $_POST['action'] ?? '';
 
+// Handle different account actions
 switch ($action) {
     case 'update_profile':
         updateProfile($conn);
@@ -27,6 +30,7 @@ switch ($action) {
         break;
 }
 
+// Updating user profile information
 function updateProfile($conn) {
     $user_id = $_SESSION['user_id'];
     $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
@@ -46,6 +50,7 @@ function updateProfile($conn) {
     }
 }
 
+// Changing user password
 function changePassword($conn) {
     $user_id = $_SESSION['user_id'];
     $current_password = $_POST['current_password'];

@@ -1,17 +1,18 @@
 <?php
 require_once 'php/db/connection.php';
 
+// Execute database migration when form is submitted
 if (isset($_POST['migrate'])) {
-    // Start transaction
+    // Start database transaction for safe migration
     mysqli_begin_transaction($conn);
     
     try {
-        // Add new columns
+        // Add new column structure (course, year_level, section)
         mysqli_query($conn, "ALTER TABLE students ADD COLUMN course VARCHAR(100) AFTER guardian_contact");
         mysqli_query($conn, "ALTER TABLE students ADD COLUMN year_level INT(11) AFTER course");
         mysqli_query($conn, "ALTER TABLE students ADD COLUMN section VARCHAR(50) AFTER year_level");
         
-        // Migrate data from course_year_section to new fields
+        // Migrate existing data from old format to new structure
         $students = mysqli_query($conn, "SELECT id, course_year_section FROM students");
         
         while ($student = mysqli_fetch_assoc($students)) {

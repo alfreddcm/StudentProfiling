@@ -7,19 +7,23 @@ include_once 'check_migration.php';
 
 $page_title = 'Dashboard';
 
+// Get total students count
 $total_students_query = "SELECT COUNT(*) as total FROM students";
 $total_students_result = mysqli_query($conn, $total_students_query);
 $total_students = mysqli_fetch_assoc($total_students_result)['total'];
 
+// Get active students count
 $active_students_query = "SELECT COUNT(*) as total FROM students WHERE enrollment_status = 'Active'";
 $active_students_result = mysqli_query($conn, $active_students_query);
 $active_students = mysqli_fetch_assoc($active_students_result)['total'];
 
+// Get today's enrolled students
 $today = date('Y-m-d');
 $today_students_query = "SELECT COUNT(*) as total FROM students WHERE DATE(created_at) = '$today'";
 $today_students_result = mysqli_query($conn, $today_students_query);
 $today_students = mysqli_fetch_assoc($today_students_result)['total'];
 
+// Get students grouped by course, year, and section
 $courses_query = "SELECT course, year_level, section, COUNT(*) as total FROM students GROUP BY course, year_level, section";
 $courses_result = mysqli_query($conn, $courses_query);
 $courses_data = [];
@@ -46,6 +50,7 @@ include 'header.php';
                     </div>
                 </div>
 
+                <!-- Statistics Cards -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <div class="card card-stat bg-primary text-white">
@@ -97,6 +102,7 @@ include 'header.php';
                 </div>
 
                 <div class="row">
+                    <!-- Course Statistics Table -->
                     <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
@@ -138,6 +144,7 @@ include 'header.php';
                         </div>
                     </div>
 
+                    <!-- Quick Actions Panel -->
                     <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
@@ -151,9 +158,7 @@ include 'header.php';
                                     <a href="students.php" class="btn btn-outline-primary">
                                         <i class="bi bi-list-ul"></i> View All Students
                                     </a>
-                                    <a href="pdf/generate_student_list.php" target="_blank" class="btn btn-outline-secondary">
-                                        <i class="bi bi-file-pdf"></i> Download PDF Report
-                                    </a>
+                                    
                                 </div>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ require_once 'php/db/connection.php';
 
 $page_title = 'My Account';
 
+// Get current user data
 $user_id = $_SESSION['user_id'];
 $query = "SELECT * FROM users WHERE id = '$user_id'";
 $result = mysqli_query($conn, $query);
@@ -28,6 +29,7 @@ include 'header.php';
                 </div>
 
                 <div class="row">
+                    <!-- Profile Information Form -->
                     <div class="col-lg-6">
                         <div class="card mb-4">
                             <div class="card-header">
