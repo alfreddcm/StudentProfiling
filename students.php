@@ -263,19 +263,6 @@ include 'header.php';
                         <label for="address" class="form-label">Address</label>
                         <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
                     </div>
-                    
-                    <h6 class="text-primary mb-3 mt-4">Guardian Information</h6>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="guardian_name" class="form-label">Guardian Name</label>
-                            <input type="text" class="form-control" id="guardian_name" name="guardian_name" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="guardian_contact" class="form-label">Guardian Contact</label>
-                            <input type="text" class="form-control" id="guardian_contact" name="guardian_contact" pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-                        </div>
-                    </div>
-                    
                     <h6 class="text-primary mb-3 mt-4">Academic Information</h6>
                     <div class="row">
                         <div class="col-md-4 mb-3">
@@ -343,6 +330,20 @@ include 'header.php';
                             </select>
                         </div>
                     </div>
+
+                    <h6 class="text-primary mb-3 mt-4">Guardian Information</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="guardian_name" class="form-label">Guardian Name</label>
+                            <input type="text" class="form-control" id="guardian_name" name="guardian_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="guardian_contact" class="form-label">Guardian Contact</label>
+                            <input type="text" class="form-control" id="guardian_contact" name="guardian_contact" pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                        </div>
+                    </div>
+                    
+                    
                     
                 </div>
                 <div class="modal-footer">
